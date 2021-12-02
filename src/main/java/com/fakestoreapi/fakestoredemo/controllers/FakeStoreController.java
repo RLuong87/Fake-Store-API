@@ -1,12 +1,11 @@
 package com.fakestoreapi.fakestoredemo.controllers;
 
 import com.fakestoreapi.fakestoredemo.models.FakeStoreModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import java.util.ArrayList;
+import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/fakestore")
@@ -38,6 +37,24 @@ public class FakeStoreController {
             System.out.println(e.getMessage());
             return e.getMessage();
         }
+    }
+
+    @GetMapping("/someprices")
+    public Object getPrice(RestTemplate restTemplate,
+                           @RequestParam(name = "price") String price) {
+        int newPrice = Integer.parseInt(price);
+
+        ArrayList<FakeStoreModel> prices = new ArrayList<>();
+
+        for (int i = 0; i < newPrice; i++) {
+
+            if (newPrice > 20d) {
+                String URL = FSURL + "/" + i;
+                FakeStoreModel fakeProducts = restTemplate.getForObject(URL, FakeStoreModel.class);
+                Collections.addAll(prices, fakeProducts);
+            }
+        }
+        return prices;
     }
 
 }
