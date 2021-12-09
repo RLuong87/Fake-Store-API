@@ -2,7 +2,6 @@ package com.fakestoreapi.fakestoredemo.controllers;
 
 import com.fakestoreapi.fakestoredemo.models.FakeStoreModel;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,25 +19,12 @@ public class FakeStoreController {
         return restTemplate.getForObject(FSURL, FakeStoreModel[].class);
     }
 
-    // Works
+    // Not Working
     @GetMapping("/{id}")
-    public Object getOneProduct(RestTemplate restTemplate,
-                                @PathVariable String id) {
+    public Object getOneProduct(RestTemplate restTemplate, @PathVariable String id) {
         String URL = FSURL + "/" + id;
 
-        try {
-
-            return restTemplate.getForObject(URL, FakeStoreModel.class);
-
-        } catch (HttpClientErrorException.NotFound e) {
-
-            return "ID does not exist";
-
-        } catch (Exception e) {
-
-            System.out.println(e.getMessage());
-            return e.getMessage();
-        }
+        return restTemplate.getForObject(URL, FakeStoreModel.class);
     }
 
     // Not working
